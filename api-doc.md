@@ -14,6 +14,12 @@ My App is an application to generate a invitation wedding card. This app has :
 
 &nbsp;
 ## RESTful endpoints
+- `POST /login`
+- `POST /register`
+- `POST /invitation`
+- `GET /invitation/:id`
+- `PUT /invitation/:id`
+- `DELETE /invitation/:id`
 
 ### Global Endpoints
 _Response (401 - User not authenticated)_
@@ -28,8 +34,8 @@ _Response (500 - Server internal error)_
   "message": "Server internal error"
 }
 ```
-### GET /todos
-> Get all todos
+### GET /invitation/:id
+> Get all invitation
 
 _Request Header_
 ```json
@@ -45,19 +51,15 @@ not needed
 
 _Response (200)_
 ```json
-[
   {
     "id": 1,
-    "title": "<Deadline Challange>",
-    "description": "<saturday, 18:00>",
-    "status": "<Almost Done>",
-    "due_date": "<2020-07-23>",
+    "title": "string",
+    "date": "<saturday, 18:00>",
+    "location" : "jl.buah batu",
     "createdAt": "2020-03-20T07:15:12.149Z",
     "updatedAt": "2020-03-20T07:15:12.149Z",
-    "UserId": "<4>",
     "qrCode": "<https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=title: Deadline Challange. descripsi: Saturday, 18:00>",
   }
-]
 ```
 
 _Response (400 - Bad Request)_
@@ -67,61 +69,8 @@ _Response (400 - Bad Request)_
 }
 ```
 
----
-### GET /todos/:id
-> Get todos base on requested id.
-
-_Request Header_
-```json
-{
-  "access_token": "<access_token>"
-}
-```
-
-_Request Body_
-```
-not needed
-```
-
-_Request Params_
-```json
-{
-  "id": "<integer>"
-}
-```
-
-_Response (200)_
-```json
-{
-  "id": 1,
-  "title": "<Deadline Challange>",
-  "description": "<saturday, 18:00>",
-  "status": "<Almost Done>",
-  "due_date": "<2020-07-23>",
-  "createdAt": "2020-03-20T07:15:12.149Z",
-  "updatedAt": "2020-03-20T07:15:12.149Z",
-  "UserId": "<4>",
-  "qrCode": "<https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=title: Deadline Challange. descripsi: Saturday, 18:00>",
-}
-```
-
-_Response (400 - Bad Request)_
-```json
-{
-  "message": "Invalid request"
-}
-```
-
-_Response (404 - Not Found)_
-```json
-{
-  "message": "todos not found"
-}
-```
-
----
-### POST /todos
-> Create Todos
+### POST /invitation
+> Create invitation
 
 _Request Header_
 ```json
@@ -133,10 +82,9 @@ _Request Header_
 _Request Body_
 ```json
 {
-  "title": "<Deadline Challange>",
-  "description": "<saturday, 18:00>",
-  "status": "<Almost Done>",
-  "due_date": "<2020-07-23>"
+  "title": "<Cep & pita>",
+  "date": "<saturday, 18:00>",
+  "location": "jl.buah batu",
 }
 ```
 
@@ -144,13 +92,11 @@ _Response (201 - Created)_
 ```json
 {
   "id": 1,
-  "title": "<Deadline Challange>",
-  "description": "<saturday, 18:00>",
-  "status": "<Almost Done>",
-  "due_date": "<2020-07-23>",
+  "title": "<cep & pita>",
+  "date": "<saturday, 18:00>",
+  "location": "Jl.buah batu",
   "createdAt": "2020-03-20T07:15:12.149Z",
   "updatedAt": "2020-03-20T07:15:12.149Z",
-  "UserId": "<4>",
   "qrCode": "<https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=title: Deadline Challange. descripsi: Saturday, 18:00>",
 }
 ```
@@ -162,66 +108,8 @@ _Response (400 - Bad Request)_
 }
 ```
 
----
-### PUT /todos/:id
-> Get todos base on requested id.
-
-_Request Header_
-```json
-{
-  "access_token": "<access_token>"
-}
-```
-
-_Request Body_
-```json
-{
-  "title": "<Deadline Challange edit>",
-  "description": "<saturday, 17:00>",
-  "status": "<Almost Done edit>",
-  "due_date": "<2020-07-21>"
-}
-```
-
-_Request Params_
-```json
-{
-  "id": "<integer>"
-}
-```
-
-_Response (200)_
-```json
-{
-  "id": 1,
-  "title": "<Deadline Challange edit>",
-  "description": "<saturday, 17:00>",
-  "status": "<Almost Done edit>",
-  "due_date": "<2020-07-21>",
-  "createdAt": "2020-03-20T07:15:12.149Z",
-  "updatedAt": "2020-03-20T07:15:12.149Z",
-  "UserId": "<4>",
-  "qrCode": "<https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=title: Deadline Challange. descripsi: Saturday, 18:00>",
-}
-```
-
-_Response (403 - Bad Request)_
-```json
-{
-  "message": "Forbidden Access"
-}
-```
-
-_Response (404 - Bad Request)_
-```json
-{
-  "message": "Data not foud"
-}
-```
-
----
-### DELETE /todos/:id
-> Delete todos
+### DELETE /invitation/:id
+> Delete invitation
 
 _Request Header_
 ```json
@@ -247,13 +135,11 @@ _Response (200)_
 
 {
   "id": 1,
-  "title": "<Deadline Challange edit>",
-  "description": "<saturday, 17:00>",
-  "status": "<Almost Done edit>",
-  "due_date": "<2020-07-21>",
+  "title": "<cep & pita>",
+  "date": "<saturday, 17:00>",
+  "location": "<jl.buah batu>",
   "createdAt": "2020-03-20T07:15:12.149Z",
   "updatedAt": "2020-03-20T07:15:12.149Z",
-  "UserId": "<4>",
   "qrCode": "<https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=title: Deadline Challange. descripsi: Saturday, 18:00>",
 }
 ```
@@ -284,8 +170,8 @@ not needed
 _Request Body_
 ```json
 {
-  "email": "<baril@gmail.com>",
-  "password": "<12345>"
+  "email": "<cep@gmail.com>",
+  "password": "<qwerty>"
 }
 ```
 
@@ -315,8 +201,8 @@ not needed
 _Request Body_
 ```json
 {
-  "email": "<baril@gmail.com>",
-  "password": "<12345>"
+  "email": "<cep@gmail.com>",
+  "password": "<qwerty>"
 }
 ```
 
@@ -324,7 +210,7 @@ _Response (201)_
 ```json
 {
   "id": 1,
-  "email": "baril@gmail.com",
+  "email": "cep@gmail.com",
   "password": "$2b$10$Eq03uiQCB86/IxvwEiQlYuL/4zavUfMqZm8dGKRsoDvvREzVKhaiy",
   "updatedAt": "2020-07-06T13:01:52.682Z",
   "createdAt": "2020-07-06T13:01:52.682Z"
