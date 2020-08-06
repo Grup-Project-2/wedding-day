@@ -6,7 +6,7 @@ class InvitationController {
             title: req.body.title,
             time: req.body.time,
             location: req.body.location,
-            UserId: req.UserId,
+            UserId: req.userLogin.id,
             qrCode: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=time: ${req.body.time}. location: ${req.body.location}`
         }
 
@@ -20,6 +20,7 @@ class InvitationController {
     }
 
     static showById (req, res, next) {
+        console.log('masok aaa>>>>');
         const id = req.params.id
 
         Invitation.findByPk(id)
@@ -31,6 +32,7 @@ class InvitationController {
             }
         })
         .catch((err) => {
+            console.log('ini dia >>>', err);
             next(err)
         })
     }
