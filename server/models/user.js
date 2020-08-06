@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       User.hasMany(models.Guest)
     }
-
+    
   };
   User.init({
     email: {
