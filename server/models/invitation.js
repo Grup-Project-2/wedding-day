@@ -14,9 +14,56 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Invitation.init({
-    title: DataTypes.STRING,
-    location: DataTypes.STRING,
-    date: DataTypes.DATE
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: `Title is required!`
+        },
+        notEmpty: {
+          msg: `Title field can't be empty!`
+        }
+      }
+    },
+    time: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      validate: {
+        notNull: {
+          args: true,
+          msg: `time is required!`
+        },
+        notEmpty: {
+          args: true,
+          msg: `time field can't be empty!`
+        },
+        isDate: {
+          args: true,
+          msg: `Please use date format MM/DD/YYYY!`
+        },
+        isAfter: {
+          args: new Date().toDateString(),
+          msg: `time can be filled with date after today.`
+        }
+      }
+    },
+    location: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          args: true,
+          msg: `location is required!`
+        },
+        notEmpty: {
+          args: true,
+          msg: `location field can't be empty!`
+        }
+      }
+    },
+    qrCode: DataTypes.TEXT,
+    UserId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Invitation',
