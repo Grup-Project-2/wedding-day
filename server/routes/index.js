@@ -3,6 +3,6 @@ const invitation = require('./invitationRoute')
 const user = require('./userRoute')
 
 router.use('/',user)
-router.use('/',invitation)
+router.use('/invitations',invitation)
 
 module.exports=router

@@ -9,13 +9,22 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       title: {
+        allowNull: false,
         type: Sequelize.STRING
+      },
+      time: {
+        allowNull: false,
+        type: Sequelize.DATE
       },
       location: {
+        allowNull: false,
         type: Sequelize.STRING
       },
-      date: {
-        type: Sequelize.DATE
+      qrCode: {
+        type: Sequelize.TEXT
+      },
+      UserId: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
