@@ -25,6 +25,8 @@ function beforeLogin () {
     $("#error-login").hide()
     $("#error-register").hide()
     $("#error-add").hide()
+    $("#calender-page").hide()
+    $("#card-wedding").hide()
 }
 
 function afterLogin () {
@@ -46,6 +48,8 @@ function afterLogin () {
     $("#error-login").hide()
     $("#error-register").hide()
     $("#error-add").hide()
+    $("#calender-page").hide()
+    $("#card-wedding").show()
 
     getTodoList()
 }
@@ -88,10 +92,10 @@ function processRegister (event) {
           password: $('#passwordRegister').val()
       }
     })
-    .done((todos) => {
+    .done((invite) => {
         beforeLogin()
         $('#front-page').hide()
-        // $('#navbar-todos').show()
+        // $('#navbar-invite').show()
         $("#login-form").show()
         console.log('Success Register');
     })
@@ -122,4 +126,35 @@ function haveAccount (event) {
     event.preventDefault()
     $('#register-form').hide()
     $('#login-form').show()
+}
+
+function calendar (event) {
+    event.preventDefault()
+
+    $("#calender-page").show()
+    
+    $.ajax('http://localhost:3000/calender',{
+        method: 'POST',
+        headers: {
+            accesstoken: localStorage.accessToken
+        }
+    })
+    .done(function (data){
+        data.forEach(e => {
+            $('#bodyTable').append(`
+            <tr class="bg-warning">
+            <th scope="row">${e.name}</th>
+            <td>${e.weekdayName}</td>
+            <td>${e.date}</td>
+            <td>${e.types[0].name}</td>
+            </tr>
+            `)
+        });
+    })
+    .fail(function (err){
+        console.log('err',err);
+    })
+    .always(function (){
+        console.log('selesai');
+    })
 }
