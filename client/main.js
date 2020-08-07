@@ -157,4 +157,64 @@ function calendar (event) {
     .always(function (){
         console.log('selesai');
     })
+    
+}
+function sendEmail(event){
+    event.preventDefault()
+
+    $.ajax('http://localhost:3000/invitationsByUserId',{
+            method:'GET',
+            headers:{
+                atoken: localStorage.accessToken
+            }
+        })
+    .done(function (invtData){
+
+        $.ajax('http://localhost:3000/guest',{
+            method:'GET',
+            headers:{
+                atoken: localStorage.accessToken
+            }
+        })
+        .done(function(guestData){
+            guestData.forEach(el=>{
+                var mailgun=require('mailgun-js');
+                var api_key = '7c9014c35525cfa2fd605d387239ebb7-f7d0b107-a28d3715';
+                var domain = 'sandboxab030eee0128476ba50243aa630654a1.mailgun.org';
+                const mg = mailgun({apiKey: api_key, domain: domain});
+            const data = {
+                from: 'Wedding_CO <christonrinaldy.geodesy@gmail.com>',
+                to: el.toSend,
+                subject: 'grup_project',
+                text:  `Halo kami dari panitia pernikahan mengundang Anda untuk menghadiri acara pernikahan ${invtData.title} yang diselenggarakan,
+                        pada waktu: ${invtData.time},
+                        lokasi    : ${invtData.location},
+
+                        Kami, ${invtData.title} sangat mengharapkan kehadiran Anda.
+                
+                `
+            };
+            mg.messages().send(data, function (error, body) {
+            console.log(body);
+            
+            })
+            })
+        })    
+        .fail(function(err){
+
+        })
+        .always(function(){
+            
+        })
+
+
+        
+    })
+    .fail(function (err){
+        
+    })
+    .always(function (){
+
+    })
+
 }
