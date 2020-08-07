@@ -3,10 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-signin-client_id" content="676743939422-tp2frn97b1sh1s85u3fp2pcsnle85587.apps.googleusercontent.com">
 
     <!--Bootstrap CSS-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
     integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <!--Google SignIn-->
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&family=Russo+One&display=swap" rel="stylesheet">  -->
 
     <title>Wellcome to Wedding App</title>
 </head>
@@ -49,7 +53,9 @@
                 <label for="exampleInputPassword1">Password</label>
                 <input type="password" class="form-control" id="passwordRegister" required>
               </div>
-              <button type="submit" class="btn btn-primary">Sign Up</button> <br><br>
+              <div>
+                  <button type="submit" class="btn btn-primary">Sign Up</button> <br><br>
+              </div>
               <h5>Have an account? Click <a class="navbar-brand" href="#" onclick="haveAccount(event)"> here</a></h5>
             </form>
           </div>
@@ -189,7 +195,7 @@
     </section>
 
     <!-- Google-OAuth-Part -->
-    <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <!-- Google-OAuth-Part -->
 
     <!-- sweet alert -->

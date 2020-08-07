@@ -28,6 +28,7 @@ function beforeLogin () {
     $("#card-wedding").show()
     $("#show-login").show()
     $("#card-list-container").show()
+    $("#calender").show() 
 
     getCardList()
 }
@@ -54,6 +55,7 @@ function afterLogin () {
     $("#add-card").show()
     $("#show-login").hide()
     $("#card-list-container").show()
+    $("#calender").show() 
 
     getCardList()
 }
@@ -139,6 +141,11 @@ function calender (event) {
     $("#calender-page").show()
     $("#add-button").hide()
     $("#card-wedding").hide()
+    $("#register-form").hide()
+    $("#login-form").hide()
+    $("#card-wedding").hide()
+    $("#show-login").hide()
+    $("#card-list-container").hide()
 
     $.ajax({
         method: 'POST',
@@ -293,6 +300,7 @@ function back (event) {
         beforeLogin()
     }
 }
+
 function showLogin (event) {
     event.preventDefault()
     $("#card-wedding").hide()
@@ -300,6 +308,7 @@ function showLogin (event) {
     $("#show-login").hide()
     $("#card-list-container").hide()  
 }
+
 $(document).on("click", ".open-AddBookDialog", function (event) {
     console.log('masuk')
     var invitationId = $(event.relatedTarget).data('invitation-id');
@@ -312,3 +321,25 @@ $(document).on("click", ".open-AddBookDialog", function (event) {
     // it is unnecessary to have to manually call the modal.
     $('#inviteModal').modal('show');
 });
+
+    $("#calender").hide()  
+}
+
+// Google-OAuth
+function onSignIn(googleUser) {
+    var id_token = googleUser.getAuthResponse().id_token;
+    $.ajax({
+      method: "POST",
+      url: `${baseUrl}/googleSignin`,
+      data: { id_token }
+    })
+    .done(invite => {
+        console.log(invite.Mytoken, "INI ACCESS TOKEN");
+        localStorage.token = invite.Mytoken
+        afterLogin()
+      })
+    .fail(err => {
+        console.log(err)
+    })
+    .always(() => {})
+}
