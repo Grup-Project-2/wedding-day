@@ -15,24 +15,18 @@ class InvitationController {
             return res.status(201).json(invite)
         })
         .catch((err) => {
+            console.log('ini dia>>', err);
             next(err)
         })
     }
 
-    static showById (req, res, next) {
-        console.log('masok aaa>>>>');
-        const id = req.params.id
+    static show (req, res, next) {
 
-        Invitation.findByPk(id)
-        .then((invite) => {
-            if (!invite) {
-                throw {status: 404, name: "ErrorValidation", message: "Invite Not Found"}
-            } else {
-                return res.status(200).json(invite)
-            }
+        Invitation.findAll()
+        .then((data) => {
+            return res.status(200).json(data)
         })
         .catch((err) => {
-            console.log('ini dia >>>', err);
             next(err)
         })
     }
