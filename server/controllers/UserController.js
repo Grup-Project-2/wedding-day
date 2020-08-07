@@ -9,15 +9,8 @@ class UserController{
             email : req.body.email,
             password : hash
         }
-        User.findOne({
-            where : {
-                email : req.body.email
-            }
-        })
+        User.create(newUser)
             .then((user)=>{
-                if(!user){
-                    res.status(403).json({msg : `user has exist`})
-                }
                 res.status(201).json(user)
             })
             .catch((err)=>{
