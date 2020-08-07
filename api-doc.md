@@ -1,10 +1,10 @@
 # wedding-invitation
-My App is an application to generate a invitation wedding card. This app has : 
+My App is an application to sent a invitation wedding card. This app has : 
 * RESTful endpoint for Invitation CRUD operation
 * RESTful endpoint for User Login & Register Operation
 * JSON formatted response
 * Technology includes: 
-    - 3 Third Party API (QR code, google Oauth, Mailgun)
+    - 3 Third Party API (QR code,calender, Mailgun)
     - Authentication
     - Express Js (Node JS Framework), 
     - Object-relation Mapping: Sequelize, 
@@ -18,7 +18,8 @@ My App is an application to generate a invitation wedding card. This app has :
 - `POST /register`
 - `POST /invitation`
 - `GET /invitation/:id`
-- `PUT /invitation/:id`
+- `POST /guest`
+- `GET /guest/:id`
 - `DELETE /invitation/:id`
 
 ### Global Endpoints
