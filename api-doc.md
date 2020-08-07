@@ -4,7 +4,7 @@ My App is an application to sent a invitation wedding card. This app has :
 * RESTful endpoint for User Login & Register Operation
 * JSON formatted response
 * Technology includes: 
-    - 3 Third Party API (QR code,calender, Mailgun)
+    - 3 Third Party API (QR code, FestDays, Mailgun)
     - Authentication
     - Express Js (Node JS Framework), 
     - Object-relation Mapping: Sequelize, 
@@ -116,7 +116,7 @@ _Response (400 - Bad Request)_
 _Request Header_
 ```json
 {
-  "access_token": "<access_token>"
+  "access_token": "<MyToken>"
 }
 ```
 
@@ -246,7 +246,7 @@ _Request Body_
 _Response (201)_
 ```json
 {
-  "access_token": "<access_token>"
+  "access_token": "<MyToken>"
 }
 ```
 

@@ -104,6 +104,9 @@ function processRegister (event) {
         $('#front-page').hide()
         // $('#navbar-invite').show()
         $("#login-form").show()
+        $("#card-wedding").hide()
+        // $("#show-login").show()
+        $("#card-list-container").hide()
         console.log('Success Register');
     })
     .fail((err) => {
@@ -321,7 +324,7 @@ $(document).on("click", ".open-AddBookDialog", function (event) {
     // it is unnecessary to have to manually call the modal.
     $('#inviteModal').modal('show');
 });
-
+{
     $("#calender").hide()  
 }
 
@@ -334,8 +337,8 @@ function onSignIn(googleUser) {
       data: { id_token }
     })
     .done(invite => {
-        console.log(invite.Mytoken, "INI ACCESS TOKEN");
-        localStorage.token = invite.Mytoken
+        console.log(invite.access_token, "INI ACCESS TOKEN");
+        localStorage.token = invite.access_token
         afterLogin()
       })
     .fail(err => {
