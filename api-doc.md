@@ -116,7 +116,7 @@ _Response (400 - Bad Request)_
 _Request Header_
 ```json
 {
-  "access_token": "<access_token>"
+  "access_token": "<MyToken>"
 }
 ```
 
@@ -246,7 +246,7 @@ _Request Body_
 _Response (201)_
 ```json
 {
-  "access_token": "<access_token>"
+  "access_token": "<MyToken>"
 }
 ```
 
