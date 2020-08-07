@@ -7,7 +7,7 @@ class sendEmailController {
         try{
             console.log('masuk send email >>>>>')
             console.log(req.body)
-            var api_key = process.env.API_KEY;
+            var api_key = `${process.env.API_KEY}`;
         var domain = 'sandbox5659c7c808ac4462a0b1a8444d0f5be9.mailgun.org';
         const mg = mailgun({ apiKey: api_key, domain: domain });
         const data = {
