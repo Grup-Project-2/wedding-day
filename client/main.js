@@ -8,11 +8,10 @@ $(document).ready(function () {
 
 function beforeLogin () {
     $("#register-form").hide()
-    $("#login-form").show()
+    $("#login-form").hide()
     $("#logout").hide()
+    $("#add-card").hide()
 
-    $("#table").hide()
-    $("#table-list").hide()
     $("#add-button").hide()
     $("#form-add").hide()
     $("#form-edit").hide()
@@ -26,7 +25,11 @@ function beforeLogin () {
     $("#error-register").hide()
     $("#error-add").hide()
     $("#calender-page").hide()
-    $("#card-wedding").hide()
+    $("#card-wedding").show()
+    $("#show-login").show()
+    $("#card-list-container").show()
+
+    getCardList()
 }
 
 function afterLogin () {
@@ -34,8 +37,6 @@ function afterLogin () {
     $("#login-form").hide()
     $("#logout").show()
 
-    $("#table").show()
-    $("#table-list").show()
     $("#add-button").show()
     $("#form-add").hide()
     $("#form-edit").hide()
@@ -50,8 +51,11 @@ function afterLogin () {
     $("#error-add").hide()
     $("#calender-page").hide()
     $("#card-wedding").show()
+    $("#add-card").show()
+    $("#show-login").hide()
+    $("#card-list-container").show()
 
-    getTodoList()
+    getCardList()
 }
 
 const baseUrl = `http://localhost:3000`
@@ -68,7 +72,8 @@ function processLogin (event) {
         }
     })
     .done((invite) => {
-        localStorage.token = invite.atoken
+        console.log(invite)
+        localStorage.token = invite.Mytoken
         afterLogin()
     })
     .fail((err) => {
@@ -128,16 +133,16 @@ function haveAccount (event) {
     $('#login-form').show()
 }
 
-function calendar (event) {
+function calender (event) {
     event.preventDefault()
 
     $("#calender-page").show()
-    
-    $.ajax('http://localhost:3000/calender',{
+    $("#add-button").hide()
+    $("#card-wedding").hide()
+
+    $.ajax({
         method: 'POST',
-        headers: {
-            accesstoken: localStorage.accessToken
-        }
+        url: `${baseUrl}/calender`
     })
     .done(function (data){
         data.forEach(e => {
@@ -161,60 +166,149 @@ function calendar (event) {
 }
 function sendEmail(event){
     event.preventDefault()
+    console.log($(this))
+    var email=$('#email-receiver').val()
+    $.ajax('http://localhost:3000/sendEmail',{
+        method:'POST',
+        data:{
+            email,
+            title:$('#titleInvitation').text(),
+            location:$('#locationInvitation').text(),
+            time:$('#timeInvitation').text()
+        }
+    })
+    .done(function(data){
+        $('#inviteModal').modal('hide')
+    })
+    .fail(function(err){
+        console.log(err)
+    })
+    
+    
 
-    $.ajax('http://localhost:3000/invitationsByUserId',{
-            method:'GET',
-            headers:{
-                atoken: localStorage.accessToken
-            }
-        })
-    .done(function (invtData){
+    
 
-        $.ajax('http://localhost:3000/guest',{
-            method:'GET',
-            headers:{
-                atoken: localStorage.accessToken
-            }
-        })
-        .done(function(guestData){
-            guestData.forEach(el=>{
-                var mailgun=require('mailgun-js');
-                var api_key = '7c9014c35525cfa2fd605d387239ebb7-f7d0b107-a28d3715';
-                var domain = 'sandboxab030eee0128476ba50243aa630654a1.mailgun.org';
-                const mg = mailgun({apiKey: api_key, domain: domain});
-            const data = {
-                from: 'Wedding_CO <christonrinaldy.geodesy@gmail.com>',
-                to: el.toSend,
-                subject: 'grup_project',
-                text:  `Halo kami dari panitia pernikahan mengundang Anda untuk menghadiri acara pernikahan ${invtData.title} yang diselenggarakan,
-                        pada waktu: ${invtData.time},
-                        lokasi    : ${invtData.location},
+    // $.ajax('http://localhost:3000/invitationsByUserId',{
+    //         method:'GET',
+    //         headers:{
+    //             atoken: localStorage.accessToken
+    //         }
+    //     })
+    // .done(function (invtData){
 
-                        Kami, ${invtData.title} sangat mengharapkan kehadiran Anda.
+    //     $.ajax('http://localhost:3000/guest',{
+    //         method:'GET',
+    //         headers:{
+    //             atoken: localStorage.accessToken
+    //         }
+    //     })
+    //     .done(function(guestData){
+    //         guestData.forEach(el=>{
                 
-                `
-            };
-            mg.messages().send(data, function (error, body) {
-            console.log(body);
-            
-            })
-            })
-        })    
-        .fail(function(err){
+    //         })
+    //     })    
+    //     .fail(function(err){
 
-        })
-        .always(function(){
+    //     })
+    //     .always(function(){
             
-        })
+    //     })
 
 
         
-    })
-    .fail(function (err){
+    // })
+    // .fail(function (err){
         
-    })
-    .always(function (){
+    // })
+    // .always(function (){
 
-    })
+    // })
 
 }
+
+function getCardList () {
+    $('#card-list').empty()
+    $.ajax({
+      method: "GET",
+      url: `${baseUrl}/invitations`,
+    })
+    .done((invite) => {
+        invite.forEach(item => {
+            let time = new Date(item.time)
+            let getDate = `${time.getFullYear()}-0${time.getMonth()+1}-${time.getDate()}`
+        
+            $('#card-list').append(`
+            <div class="card mx-2 mt-4 col-3" id="card-wedding" style="width: 18rem;">
+            <img class="card-img-top" src="${item.qrCode}" alt="Card image cap">
+            <div class="card-body">
+              <h5 class="card-title">${item.title}</h5>
+              <h6 class="card-title">${getDate}</h6>
+              <h6 class="card-title">${item.location}</h6>
+              <input type="hidden" dataId="${item.id}" />
+              <button type="button" class="btn btn-info open-AddBookDialog" dataInvitationTitle="${item.title}" dataInvitationLocation="${item.location}" dataInvitationTime="${getDate}" data-toggle="modal" id="${item.id}" >Send Invitation</button>
+            </div>
+            </div>
+                `)
+    });
+        console.log(invite);
+    })
+    .fail(err => {
+        console.log("Error:", err)
+    })
+    .always(() => {})
+}
+
+function addCard (event) {
+    event.preventDefault()
+
+    const newData = {
+        title: $('#add-title').val(),
+        time: $('#add-time').val(),
+        location: $('#add-location').val(),
+    }
+    $.ajax({
+        method: "POST",
+        url: `${baseUrl}/invitations`,
+        data: {
+            title: newData.title,
+            time: newData.time,
+            location: newData.location,
+        },
+        headers: {
+            atoken: localStorage.token
+        }
+    })
+    .done((invite) => {
+        $('#exampleModal').modal('hide')
+        afterLogin()
+    })
+}
+
+function back (event) {
+    event.preventDefault()
+
+    if (localStorage.token) {
+        afterLogin()
+    } else {
+        beforeLogin()
+    }
+}
+function showLogin (event) {
+    event.preventDefault()
+    $("#card-wedding").hide()
+    $("#login-form").show()
+    $("#show-login").hide()
+    $("#card-list-container").hide()  
+}
+$(document).on("click", ".open-AddBookDialog", function (event) {
+    console.log('masuk')
+    var invitationId = $(event.relatedTarget).data('invitation-id');
+    console.log(($(this).attr("dataInvitationTitle")))
+    $('#titleInvitation').text($(this).attr("dataInvitationTitle"))
+    $('#locationInvitation').html($(this).attr("dataInvitationLocation"))
+    $('#timeInvitation').html($(this).attr("dataInvitationTime"))
+    // $(".modal-body #bookId").val( myBookId );
+    // As pointed out in comments, 
+    // it is unnecessary to have to manually call the modal.
+    $('#inviteModal').modal('show');
+});
