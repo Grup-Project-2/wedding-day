@@ -15,11 +15,10 @@ My App is an application to sent a invitation wedding card. This app has :
 &nbsp;
 ## RESTful endpoints
 - `POST /login`
+- `POST /googleSignin`
 - `POST /register`
-- `POST /invitation`
-- `GET /invitation/:id`
-- `POST /guest`
-- `GET /guest/:id`
+- `POST /invitations`
+- `GET /invitations/`
 - `DELETE /invitation/:id`
 
 ### Global Endpoints
@@ -35,7 +34,7 @@ _Response (500 - Server internal error)_
   "message": "Server internal error"
 }
 ```
-### GET /invitation/:id
+### GET /invitations/
 > Get all invitation
 
 _Request Header_
@@ -53,13 +52,14 @@ not needed
 _Response (200)_
 ```json
   {
-    "id": 1,
-    "title": "string",
-    "date": "<saturday, 18:00>",
-    "location" : "jl.buah batu",
+    "id": "<given id by system>",
+    "title": "<title to get insert into>",
+    "time": "<time to get insert into>",
+    "location": "<location to get insert into>",
+    "UserId": "<get by UserId>",
     "createdAt": "2020-03-20T07:15:12.149Z",
     "updatedAt": "2020-03-20T07:15:12.149Z",
-    "qrCode": "<https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=title: Deadline Challange. descripsi: Saturday, 18:00>",
+    "qrCode": "<qrCode get by time and location insert>",
   }
 ```
 
@@ -70,35 +70,36 @@ _Response (400 - Bad Request)_
 }
 ```
 
-### POST /invitation
+### POST /invitations
 > Create invitation
 
 _Request Header_
 ```json
 {
-  "access_token": "<access_token>"
+  "access_token": "<MyToken>"
 }
 ```
 
 _Request Body_
 ```json
 {
-  "title": "<Cep & pita>",
-  "date": "<saturday, 18:00>",
-  "location": "jl.buah batu",
+  "title": "<title to get insert into>",
+  "time": "<time to get insert into>",
+  "location": "<location to get insert into>"
 }
 ```
 
 _Response (201 - Created)_
 ```json
 {
-  "id": 1,
-  "title": "<cep & pita>",
-  "date": "<saturday, 18:00>",
-  "location": "Jl.buah batu",
+  "id": "<given id by system>",
+  "title": "<title to get insert into>",
+  "time": "<time to get insert into>",
+  "location": "<location to get insert into>",
+  "UserId": "<get by UserId>",
   "createdAt": "2020-03-20T07:15:12.149Z",
   "updatedAt": "2020-03-20T07:15:12.149Z",
-  "qrCode": "<https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=title: Deadline Challange. descripsi: Saturday, 18:00>",
+  "qrCode": "<qrCode get by time and location insert>"
 }
 ```
 
@@ -109,7 +110,7 @@ _Response (400 - Bad Request)_
 }
 ```
 
-### DELETE /invitation/:id
+### DELETE /invitations/:id
 > Delete invitation
 
 _Request Header_
@@ -135,13 +136,14 @@ _Response (200)_
 ```json
 
 {
-  "id": 1,
-  "title": "<cep & pita>",
-  "date": "<saturday, 17:00>",
-  "location": "<jl.buah batu>",
+  "id": "<given id by system>",
+  "title": "<title to get insert into>",
+  "time": "<time to get insert into>",
+  "location": "<location to get insert into>",
+  "UserId": "<get by UserId>",
   "createdAt": "2020-03-20T07:15:12.149Z",
   "updatedAt": "2020-03-20T07:15:12.149Z",
-  "qrCode": "<https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=title: Deadline Challange. descripsi: Saturday, 18:00>",
+  "qrCode": "<qrCode get by time and location insert>",
 }
 ```
 
@@ -171,15 +173,15 @@ not needed
 _Request Body_
 ```json
 {
-  "email": "<cep@gmail.com>",
-  "password": "<qwerty>"
+  "email": "<email to get insert into>",
+  "password": "<password to get insert into>",
 }
 ```
 
 _Response (200)_
 ```json
 {
-  "access_token": "<access_token>"
+  "access_token": "<MyToken>"
 }
 ```
 
@@ -202,17 +204,17 @@ not needed
 _Request Body_
 ```json
 {
-  "email": "<cep@gmail.com>",
-  "password": "<qwerty>"
+  "email": "<email to get insert into>",
+  "password": "<password to get insert into>",
 }
 ```
 
 _Response (201)_
 ```json
 {
-  "id": 1,
-  "email": "cep@gmail.com",
-  "password": "$2b$10$Eq03uiQCB86/IxvwEiQlYuL/4zavUfMqZm8dGKRsoDvvREzVKhaiy",
+  "id": "<given id by system>",
+  "email": "<email to get insert into>",
+  "password": "<password Encrypted>",
   "updatedAt": "2020-07-06T13:01:52.682Z",
   "createdAt": "2020-07-06T13:01:52.682Z"
 }

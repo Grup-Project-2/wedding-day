@@ -28,6 +28,7 @@ function beforeLogin () {
     $("#card-wedding").show()
     $("#show-login").show()
     $("#card-list-container").show()
+    $("#calender").show() 
 
     getCardList()
 }
@@ -54,6 +55,7 @@ function afterLogin () {
     $("#add-card").show()
     $("#show-login").hide()
     $("#card-list-container").show()
+    $("#calender").show() 
 
     getCardList()
 }
@@ -138,6 +140,11 @@ function calender (event) {
     $("#calender-page").show()
     $("#add-button").hide()
     $("#card-wedding").hide()
+    $("#register-form").hide()
+    $("#login-form").hide()
+    $("#card-wedding").hide()
+    $("#show-login").hide()
+    $("#card-list-container").hide()
 
     $.ajax({
         method: 'POST',
@@ -229,10 +236,31 @@ function back (event) {
         beforeLogin()
     }
 }
+
 function showLogin (event) {
     event.preventDefault()
     $("#card-wedding").hide()
     $("#login-form").show()
     $("#show-login").hide()
     $("#card-list-container").hide()  
+    $("#calender").hide()  
+}
+
+// Google-OAuth
+function onSignIn(googleUser) {
+    var id_token = googleUser.getAuthResponse().id_token;
+    $.ajax({
+      method: "POST",
+      url: `${baseUrl}/googleSignin`,
+      data: { id_token }
+    })
+    .done(invite => {
+        console.log(invite.Mytoken, "INI ACCESS TOKEN");
+        localStorage.token = invite.Mytoken
+        afterLogin()
+      })
+    .fail(err => {
+        console.log(err)
+    })
+    .always(() => {})
 }
