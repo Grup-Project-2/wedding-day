@@ -8,11 +8,10 @@ $(document).ready(function () {
 
 function beforeLogin () {
     $("#register-form").hide()
-    $("#login-form").show()
+    $("#login-form").hide()
     $("#logout").hide()
+    $("#add-card").hide()
 
-    $("#table").hide()
-    $("#table-list").hide()
     $("#add-button").hide()
     $("#form-add").hide()
     $("#form-edit").hide()
@@ -26,7 +25,11 @@ function beforeLogin () {
     $("#error-register").hide()
     $("#error-add").hide()
     $("#calender-page").hide()
-    $("#card-wedding").hide()
+    $("#card-wedding").show()
+    $("#show-login").show()
+    $("#card-list-container").show()
+
+    getCardList()
 }
 
 function afterLogin () {
@@ -34,8 +37,6 @@ function afterLogin () {
     $("#login-form").hide()
     $("#logout").show()
 
-    $("#table").show()
-    $("#table-list").show()
     $("#add-button").show()
     $("#form-add").hide()
     $("#form-edit").hide()
@@ -50,8 +51,11 @@ function afterLogin () {
     $("#error-add").hide()
     $("#calender-page").hide()
     $("#card-wedding").show()
+    $("#add-card").show()
+    $("#show-login").hide()
+    $("#card-list-container").show()
 
-    getTodoList()
+    getCardList()
 }
 
 const baseUrl = `http://localhost:3000`
@@ -68,7 +72,7 @@ function processLogin (event) {
         }
     })
     .done((invite) => {
-        localStorage.token = invite.atoken
+        localStorage.token = invite.Mytoken
         afterLogin()
     })
     .fail((err) => {
@@ -128,16 +132,16 @@ function haveAccount (event) {
     $('#login-form').show()
 }
 
-function calendar (event) {
+function calender (event) {
     event.preventDefault()
 
     $("#calender-page").show()
-    
-    $.ajax('http://localhost:3000/calender',{
+    $("#add-button").hide()
+    $("#card-wedding").hide()
+
+    $.ajax({
         method: 'POST',
-        headers: {
-            accesstoken: localStorage.accessToken
-        }
+        url: `${baseUrl}/calender`
     })
     .done(function (data){
         data.forEach(e => {
@@ -157,4 +161,78 @@ function calendar (event) {
     .always(function (){
         console.log('selesai');
     })
+}
+
+function getCardList () {
+    $('#card-list').empty()
+    $.ajax({
+      method: "GET",
+      url: `${baseUrl}/invitations`,
+    })
+    .done((invite) => {
+        invite.forEach(item => {
+            let time = new Date(item.time)
+            let getDate = `${time.getFullYear()}-0${time.getMonth()+1}-${time.getDate()}`
+        
+            $('#card-list').append(`
+            <div class="card mx-2 mt-4 col-3" id="card-wedding" style="width: 18rem;">
+            <img class="card-img-top" src="${item.qrCode}" alt="Card image cap">
+            <div class="card-body">
+              <h5 class="card-title">${item.title}</h5>
+              <h6 class="card-title">${getDate}</h6>
+              <h6 class="card-title">${item.location}</h6>
+              <button type="button" class="btn btn-info" id="add-card" data-toggle="modal" data-target="#inviteModal">Send Invitation</button>
+            </div>
+            </div>
+                `)
+    });
+        console.log(invite);
+    })
+    .fail(err => {
+        console.log("Error:", err)
+    })
+    .always(() => {})
+}
+
+function addCard (event) {
+    event.preventDefault()
+
+    const newData = {
+        title: $('#add-title').val(),
+        time: $('#add-time').val(),
+        location: $('#add-location').val(),
+    }
+    $.ajax({
+        method: "POST",
+        url: `${baseUrl}/invitations`,
+        data: {
+            title: newData.title,
+            time: newData.time,
+            location: newData.location,
+        },
+        headers: {
+            atoken: localStorage.token
+        }
+    })
+    .done((invite) => {
+        $('#exampleModal').modal('hide')
+        afterLogin()
+    })
+}
+
+function back (event) {
+    event.preventDefault()
+
+    if (localStorage.token) {
+        afterLogin()
+    } else {
+        beforeLogin()
+    }
+}
+function showLogin (event) {
+    event.preventDefault()
+    $("#card-wedding").hide()
+    $("#login-form").show()
+    $("#show-login").hide()
+    $("#card-list-container").hide()  
 }
