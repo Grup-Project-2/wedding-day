@@ -74,6 +74,7 @@ function processLogin (event) {
         }
     })
     .done((invite) => {
+        console.log(invite)
         localStorage.token = invite.Mytoken
         afterLogin()
     })
@@ -168,6 +169,68 @@ function calender (event) {
     .always(function (){
         console.log('selesai');
     })
+    
+}
+function sendEmail(event){
+    event.preventDefault()
+    console.log($(this))
+    var email=$('#email-receiver').val()
+    $.ajax('http://localhost:3000/sendEmail',{
+        method:'POST',
+        data:{
+            email,
+            title:$('#titleInvitation').text(),
+            location:$('#locationInvitation').text(),
+            time:$('#timeInvitation').text()
+        }
+    })
+    .done(function(data){
+        $('#inviteModal').modal('hide')
+    })
+    .fail(function(err){
+        console.log(err)
+    })
+    
+    
+
+    
+
+    // $.ajax('http://localhost:3000/invitationsByUserId',{
+    //         method:'GET',
+    //         headers:{
+    //             atoken: localStorage.accessToken
+    //         }
+    //     })
+    // .done(function (invtData){
+
+    //     $.ajax('http://localhost:3000/guest',{
+    //         method:'GET',
+    //         headers:{
+    //             atoken: localStorage.accessToken
+    //         }
+    //     })
+    //     .done(function(guestData){
+    //         guestData.forEach(el=>{
+                
+    //         })
+    //     })    
+    //     .fail(function(err){
+
+    //     })
+    //     .always(function(){
+            
+    //     })
+
+
+        
+    // })
+    // .fail(function (err){
+        
+    // })
+    // .always(function (){
+
+    // })
+
 }
 
 function getCardList () {
@@ -188,7 +251,8 @@ function getCardList () {
               <h5 class="card-title">${item.title}</h5>
               <h6 class="card-title">${getDate}</h6>
               <h6 class="card-title">${item.location}</h6>
-              <button type="button" class="btn btn-info" id="add-card" data-toggle="modal" data-target="#inviteModal">Send Invitation</button>
+              <input type="hidden" dataId="${item.id}" />
+              <button type="button" class="btn btn-info open-AddBookDialog" dataInvitationTitle="${item.title}" dataInvitationLocation="${item.location}" dataInvitationTime="${getDate}" data-toggle="modal" id="${item.id}" >Send Invitation</button>
             </div>
             </div>
                 `)
@@ -243,6 +307,21 @@ function showLogin (event) {
     $("#login-form").show()
     $("#show-login").hide()
     $("#card-list-container").hide()  
+}
+
+$(document).on("click", ".open-AddBookDialog", function (event) {
+    console.log('masuk')
+    var invitationId = $(event.relatedTarget).data('invitation-id');
+    console.log(($(this).attr("dataInvitationTitle")))
+    $('#titleInvitation').text($(this).attr("dataInvitationTitle"))
+    $('#locationInvitation').html($(this).attr("dataInvitationLocation"))
+    $('#timeInvitation').html($(this).attr("dataInvitationTime"))
+    // $(".modal-body #bookId").val( myBookId );
+    // As pointed out in comments, 
+    // it is unnecessary to have to manually call the modal.
+    $('#inviteModal').modal('show');
+});
+
     $("#calender").hide()  
 }
 

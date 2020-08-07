@@ -18,7 +18,11 @@
     "google-auth-library": "^6.0.6",
     "jsonwebtoken": "^8.5.1",
     "live-server": "^1.2.1",
+    "mailgun-js": "^0.22.0",
     "pg": "^8.3.0",
     "sequelize": "^6.3.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }

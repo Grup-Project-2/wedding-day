@@ -92,6 +92,8 @@
       </div>
     </div>
 
+    
+    
     <!-- Card -->
     
     <div class="container mt-5" id="card-list-container">
@@ -152,6 +154,11 @@
               </button>
             </div>
             <div class="modal-body">
+              <div class="d-flex">
+                <span id="titleInvitation"></span>
+                <span id="locationInvitation"></span>
+                <span id="timeInvitation"></span>
+              </div>
               <form>
                 <div class="form-group">
                   <label for="wedding-name" class="col-form-label">Send to:</label>
@@ -161,7 +168,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-              <button type="button" class="btn btn-primary">Send</button>
+              <button type="button" class="btn btn-primary" onclick="sendEmail(event)">Send</button>
             </div>
           </div>
         </div>
