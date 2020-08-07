@@ -1,20 +1,6 @@
 const {Guest , Invitation} = require('../models')
 
-class InvitationController{
-    static create(req,res){
-        let newInvitation = {
-            title : req.body.title,
-            location : req.body.location,
-            date : req.body.date
-        }
-        Invitation.create(newInvitation)
-            .then((invitation)=>{
-                res.status(201).json(invitation)
-            })
-            .catch((err)=>{
-                res.status(400).json(err)
-            })
-    }
+class GuestController{
 
     static addSendTo(req,res){
         let SendtoMail = {
@@ -46,4 +32,4 @@ class InvitationController{
     }
 }
 
-module.exports = InvitationController;
+module.exports = GuestController;
